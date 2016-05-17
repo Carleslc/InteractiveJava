@@ -32,7 +32,7 @@ public abstract class InteractiveJava {
 				console.enablePrinting(false);
 				Object value = process(console, argsReplaced.length > 1 ? argsReplaced[1] : args[2]);
 				console.enablePrinting(printing);
-				if (value == null || console.lastCommandWasError())
+				if (value == null)
 					value = console.getLastCommand();
 				console.addVariable(args[0], value);
 				console.printAsConsole(value.toString());
