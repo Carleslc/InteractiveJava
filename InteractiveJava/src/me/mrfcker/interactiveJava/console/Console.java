@@ -59,21 +59,6 @@ public abstract class Console extends JTextPane implements Serializable {
 			e.printStackTrace();
 			return;
 		}
-
-		/*new SwingWorker<Void, String>() {
-			protected Void doInBackground() throws Exception {
-				Scanner s = new Scanner(System.in);
-				while (s.hasNextLine()) {
-					String line = s.nextLine();
-					publish(line);
-				}
-				s.close();
-				return null;
-			}
-			@Override protected void process(java.util.List<String> chunks) {
-				System.out.println(chunks);
-			}
-		}.execute();*/
 	}
 	
 	public Console(JFrame attached) {

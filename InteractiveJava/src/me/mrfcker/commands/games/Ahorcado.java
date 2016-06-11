@@ -16,7 +16,7 @@ import me.mrfcker.utils.SwingUtils;
 
 public class Ahorcado implements Command {
 
-	private static final int maxLives = 6;
+	private static final int MAX_LIVES = 6;
 
 	private Console console;
 
@@ -39,12 +39,12 @@ public class Ahorcado implements Command {
 		inputPanel.add(txt);
 
 		caracteres = new HashSet<Character>();
-		vidas = maxLives;
+		vidas = MAX_LIVES;
 		console.printAsHelp("Buscando palabra...");
 		word = getRandomWord().toUpperCase();
 		hid = Strings.repeat("_ ", word.length());
 
-		boolean complete = false;
+		complete = false;
 		state();
 
 		while (!complete && vidas > 0 && !hid.replace(" ", "").equals(word)) {
@@ -70,7 +70,7 @@ public class Ahorcado implements Command {
 
 	@Override
 	public String help() {
-		return "The Hangman in Spanish. You have " + maxLives + " lives to find out the hidden word.";
+		return "The Hangman in Spanish. You have " + MAX_LIVES + " lives to find out the hidden word.";
 	}
 
 	private void nextIteration(String line) {
@@ -103,7 +103,7 @@ public class Ahorcado implements Command {
 	}
 
 	private void printLife(int vidas) {
-		Color c = vidas > maxLives/2 ? Color.GREEN : vidas <= 1 ? Color.RED : Color.ORANGE;
+		Color c = vidas > MAX_LIVES/2 ? Color.GREEN : vidas <= 1 ? Color.RED : Color.ORANGE;
 		console.printColored("Vidas: ", Color.GRAY, false);
 		console.printColored(Integer.toString(vidas), c);
 	}

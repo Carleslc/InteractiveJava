@@ -12,33 +12,32 @@ public abstract class InteractiveJava {
 		// TODO Save (State) and Load (State)
 	}
 	
-	public static Object process(Console console, String line) {
+	public static Object process(Console console, String line, boolean ignoreVariable) {
 		String replaced = StringUtils.replaceVariables(line.toLowerCase(), console.getVariables());
-		replaced = replaced.replace("\"", "");
+		line = StringUtils.formatLiterals(line.trim());
+		String[] args = line.split("\\s");
+		line = line.replace("§", " ");
+		args = StringUtils.undoLiterals(args);
 		try {
-			// TODO implements own evaluator for >, <, >=, <=, ==, !, NOT, &&, AND, ||, OR,
-			// +, -, *, /, % and variables set at console
+			// TODO implements own evaluator for >, <, >=, <=, ==, !, NOT, &&, AND, ||, OR
 			Object evaluated = new DoubleEvaluator().evaluate(replaced);
 			console.printAsConsole(evaluated.toString());
 			return evaluated;
 		} catch (Exception e) {
-			line = StringUtils.formatLiterals(line.trim());
-			String[] args = line.split("\\s", 3);
-			line = line.replace("§", " ");
-			args = StringUtils.undoLiterals(args);
 			if (args.length > 2 && args[1].equals("=")) {
 				String[] argsReplaced = replaced.split("\\s*=\\s*", 2);
 				boolean printing = console.isEnablePrinting();
 				console.enablePrinting(false);
-				Object value = process(console, argsReplaced.length > 1 ? argsReplaced[1] : args[2]);
+				Object value = process(console, argsReplaced.length > 1 ? argsReplaced[1] : args[2], true);
 				console.enablePrinting(printing);
 				if (value == null)
 					value = console.getLastCommand();
+				value = value.toString().replace("\"", "");
 				console.addVariable(args[0], value);
 				console.printAsConsole(value.toString());
 				return value;
 			}
-			else if (console.existsVariable(args[0])) {
+			else if (!ignoreVariable && console.existsVariable(args[0])) {
 				Object value = console.getVariable(args[0]);
 				console.printAsConsole(value.toString());
 				return value;

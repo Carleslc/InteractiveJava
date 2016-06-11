@@ -32,7 +32,7 @@ public class InteractiveJavaConsole extends Console {
 	
 	@Override
 	public void onNewLine(String lastLine) {
-		Object value = InteractiveJava.process(this, lastLine);
+		Object value = InteractiveJava.process(this, lastLine, false);
 		addSystemVariable("ANS", String.valueOf(value), true);
 	}
 
@@ -117,6 +117,8 @@ public class InteractiveJavaConsole extends Console {
 			Command.addAlias("edit", "cat");
 			Command.addAlias("edit", "more");
 			Command.addAlias("edit", "less");
+			Command.addAlias("exit", "close");
+			Command.addAlias("make_directory", "mkdir");
 		} catch (Exception ignore) {}
 	}
 

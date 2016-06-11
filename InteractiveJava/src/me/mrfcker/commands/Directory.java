@@ -7,6 +7,7 @@ import java.util.Date;
 
 import me.mrfcker.interactiveJava.Command;
 import me.mrfcker.interactiveJava.console.Console;
+import me.mrfcker.utils.StringUtils;
 
 public class Directory implements Command {
 
@@ -15,7 +16,7 @@ public class Directory implements Command {
 		StringBuilder sb = new StringBuilder();
 		String path;
 		if (args.length > 1)
-			path = console.getVariable("PWD") + args[1];
+			path = console.getVariable("PWD") + StringUtils.concat(args, 1);
 		else
 			path = console.getVariable("PWD").toString();
 

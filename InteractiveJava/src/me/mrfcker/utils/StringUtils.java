@@ -7,12 +7,17 @@ import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StringUtils {
 
+	private static final Pattern LITERAL_PATTERN = Pattern.compile("\".*\"");
+	
 	public static String formatAsCommand(String s) {
 		if (s != null) {
 			s = s.trim();
@@ -43,10 +48,34 @@ public class StringUtils {
 
 	public static String replaceVariables(String s, Map<String, Object> variables) {
 		if (s != null) {
+			// Remove literals
+			List<String> literals = getLiterals(s);
+			s = s.replaceAll(LITERAL_PATTERN.pattern(), "\\$!\\$");
 			for (Entry<String, Object> var : variables.entrySet())
 				s = s.replace(var.getKey(), var.getValue().toString());
+			s = replaceLiterals(s, literals);
 		}
 		return s;
+	}
+
+	private static String replaceLiterals(String s, List<String> literals) {
+		if (!literals.isEmpty()) {
+			Matcher m = Pattern.compile("\\$!\\$").matcher(s);
+			StringBuffer sb = new StringBuffer();
+			int i = 0;
+			while (m.find())
+				m.appendReplacement(sb, literals.get(i++));
+			s = m.appendTail(sb).toString();
+		}
+		return s;
+	}
+	
+	public static List<String> getLiterals(String s) {
+		List<String> literals = new ArrayList<>();
+		Matcher m = LITERAL_PATTERN.matcher(s);
+		while (m.find())
+			literals.add(m.group(0));
+		return literals;
 	}
 
 	public static String formatLiterals(String s) {
@@ -71,6 +100,16 @@ public class StringUtils {
 		for (int i = 0; i < args.length; ++i)
 			args[i] = args[i].replace("§", " ");
 		return args;
+	}
+	
+	public static String concat(String[] args, int startIndex) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = startIndex; i < args.length; ++i) {
+			sb.append(args[i]);
+			if (i < args.length - 1)
+				sb.append(" ");
+		}
+		return sb.toString();
 	}
 	
 	public static String source(String urlSite) throws IOException {
@@ -106,7 +145,7 @@ public class StringUtils {
     public static String withoutSpecials(String input) {
         // Descomposición canónica
         String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
-        // Nos quedamos únicamente con los caracteres ASCII
+        // Nos quedamos \u00FAnicamente con los caracteres ASCII
         return Pattern.compile("\\P{ASCII}+").matcher(normalized).replaceAll("");
     }
 }
