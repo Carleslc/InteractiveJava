@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 import com.google.common.base.Strings;
 
 import me.mrfcker.interactiveJava.Command;
@@ -17,6 +18,7 @@ import me.mrfcker.utils.SwingUtils;
 public class Ahorcado implements Command {
 
 	private static final int MAX_LIVES = 6;
+	private static final String SPACE_INDICATOR = "@";
 
 	private Console console;
 
@@ -41,7 +43,7 @@ public class Ahorcado implements Command {
 		caracteres = new HashSet<Character>();
 		vidas = MAX_LIVES;
 		console.printAsHelp("Buscando palabra...");
-		word = getRandomWord().toUpperCase();
+		word = getRandomWord().toUpperCase().replace(" ", SPACE_INDICATOR);
 		hid = Strings.repeat("_ ", word.length());
 
 		complete = false;
@@ -55,7 +57,8 @@ public class Ahorcado implements Command {
 				console.printColored(word, Color.MAGENTA, true);
 				return word;
 			}
-			nextIteration(txt.getText());
+			String answer = txt.getText();
+			if (!answer.isEmpty()) nextIteration(answer);
 			txt.setText("");
 		}
 
@@ -75,14 +78,16 @@ public class Ahorcado implements Command {
 
 	private void nextIteration(String line) {
 		String aux = hid;
-		line = line.toUpperCase();
-		char c = line.charAt(0);
+		line = line.toUpperCase().replace(" ", SPACE_INDICATOR);
+		
 		if (line.length() > 1) {
 			if (line.equals(word))
 				complete = true;
 			else
 				state();
 		}
+		
+		char c = line.charAt(0);
 
 		if (!complete) {
 			if (caracteres.add(c)) {
@@ -97,7 +102,7 @@ public class Ahorcado implements Command {
 	}
 
 	private void state() {
-		console.printAsHelp(hid + "\nLetras: " + word.length());
+		console.printAsHelp(hid.replace(SPACE_INDICATOR, " ") + "\nLetras: " + word.length());
 		printLife(vidas);
 		drawStage(6 - vidas);
 	}
@@ -111,17 +116,21 @@ public class Ahorcado implements Command {
 	private static String refresh(String secretWord, String hid, char letter) {
 		char[] newHid = hid.toCharArray();
 		for (int i = 0; i < hid.length(); i += 2) {
-			if (letter == secretWord.charAt(i/2))
+			if (letter == secretWord.charAt(i/2)) {
 				newHid[i] = letter;
+			}
 		}
 		return String.valueOf(newHid);
 	}
 
+	static int i = 0;
+	
 	private static String getRandomWord() {
 		String word;
 		try {
 			String source = StringUtils.source("http://www.palabrasque.com/palabra-aleatoria.php?Submit=Nueva+palabra");
-			word = StringUtils.withoutSpecials(source.split("\n")[123].replaceAll("\\<[^<>]*\\>", "").trim());
+			String[] lines = source.split("\n");
+			word = StringUtils.withoutSpecials(lines[148].replaceAll("\\<[^<>]*\\>", "").trim());
 		} catch (Exception e) {
 			word = "REVISA-TU-CONEXION-A-INTERNET";
 			e.printStackTrace();
