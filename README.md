@@ -2,6 +2,12 @@
 
 _Simple bash-like cross-platform console._
 
+## How to install
+
+1. Ensure you have **[Java 8](https://www.java.com/es/download/)** installed.
+2. Download `InteractiveJava-1.0.jar`
+3. Execute it with `java -jar InteractiveJava-1.0.jar` or double click.
+
 ## Commands
 
 ![Commands](https://i.imgur.com/z67BoXV.png "Commands")
