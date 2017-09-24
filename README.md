@@ -12,17 +12,17 @@ _Simple bash-like cross-platform console._
 
 ![Commands](https://i.imgur.com/z67BoXV.png "Commands")
 
-#### Aliases
+### Aliases
 
 Don't like the name of a command? Make an alias!
 
 ![Aliases](https://i.imgur.com/UjbAn7d.png "Aliases")
 
-#### Command list
+### Command list
 
 ![Help](https://i.imgur.com/0dxj9GJ.png "Help")
 
-## Text Editor
+## Text Editor
 
 Edit your files in just a command.
 
