@@ -8,11 +8,13 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class StringUtils {
 
@@ -85,7 +87,7 @@ public class StringUtils {
 			for (int i = 0; i < s.length(); ++i) {
 				char at = s.charAt(i);
 				if (isLiteral && Character.isSpaceChar(at))
-					sb.append('§');
+					sb.append("$L$");
 				else if (at == '"')
 					isLiteral = !isLiteral;
 				else
@@ -98,8 +100,15 @@ public class StringUtils {
 
 	public static String[] undoLiterals(String[] args) {
 		for (int i = 0; i < args.length; ++i)
-			args[i] = args[i].replace("§", " ");
+			args[i] = args[i].replace("$L$", " ");
 		return args;
+	}
+	
+	public static String[] remove(String[] args, String substring) {
+		List<String> argsList = Arrays.stream(args)
+				.filter(arg -> !arg.equals(substring))
+				.collect(Collectors.toList());
+		return argsList.toArray(new String[argsList.size()]);
 	}
 	
 	public static String concat(String[] args, int startIndex) {
@@ -120,11 +129,9 @@ public class StringUtils {
 
 		url = new URL(urlSite);
 		urlConn = url.openConnection();
-		urlConn.addRequestProperty("User-Agent",
-				"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
+		urlConn.addRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
 		
-		Reader reader = new InputStreamReader(urlConn.getInputStream(),
-				"utf-8");
+		Reader reader = new InputStreamReader(urlConn.getInputStream(), "utf-8");
 		BufferedReader br = new BufferedReader(reader);
 		
 		String line;
@@ -137,13 +144,13 @@ public class StringUtils {
 	}
 	
     /**
-     * Función que elimina acentos y caracteres especiales de
+     * Funcion que elimina acentos y caracteres especiales de
      * una cadena de texto.
      * @param input
      * @return cadena de texto limpia de acentos y caracteres especiales en MAYUSCULAS
      */
     public static String withoutSpecials(String input) {
-        // Descomposición canónica
+        // Descomposicion canonica
         String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
         // Nos quedamos \u00FAnicamente con los caracteres ASCII
         return Pattern.compile("\\P{ASCII}+").matcher(normalized).replaceAll("");

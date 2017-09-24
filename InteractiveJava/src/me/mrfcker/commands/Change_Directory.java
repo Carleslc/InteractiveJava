@@ -15,7 +15,7 @@ public class Change_Directory implements Command {
 				File dir = new File(path);
 				String parent = dir.getParent();
 				if (parent != null) {
-					path = parent + "\\";
+					path = parent + File.separatorChar;
 					console.addSystemVariable("PWD", path, true);
 					console.getRootFrame().setTitle(path);
 				}
@@ -28,7 +28,7 @@ public class Change_Directory implements Command {
 				File dir = new File(path);
 				if (dir.exists()) {
 					if (dir.isDirectory()) {
-						path += "\\";
+						path += File.separatorChar;
 						console.addSystemVariable("PWD", path, true);
 						console.getRootFrame().setTitle(path);
 						return path;

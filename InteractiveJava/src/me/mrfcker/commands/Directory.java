@@ -13,7 +13,6 @@ public class Directory implements Command {
 
 	@Override
 	public Object execute(Console console, String[] args) {
-		StringBuilder sb = new StringBuilder();
 		String path;
 		if (args.length > 1)
 			path = console.getVariable("PWD") + StringUtils.concat(args, 1);
@@ -22,6 +21,7 @@ public class Directory implements Command {
 
 		File file = new File(path);
 		if (file.exists() && file.isDirectory()) {
+			StringBuilder sb = new StringBuilder();
 			File[] files = file.listFiles();
 
 			for (int i = 0; i < files.length; ++i) {
@@ -36,6 +36,11 @@ public class Directory implements Command {
 				sb.append("\t").append(date).append("\t").append(size).append("\t").append(name);
 				if (i < files.length - 1)
 					sb.append("\n");
+			}
+			
+			if (files.length == 0) {
+				sb.append(path).append(" is empty.");
+				console.printColored(sb.toString(), Color.GRAY);
 			}
 			
 			return sb.toString();

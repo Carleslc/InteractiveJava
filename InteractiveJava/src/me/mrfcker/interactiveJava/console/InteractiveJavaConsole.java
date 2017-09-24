@@ -3,6 +3,7 @@ package me.mrfcker.interactiveJava.console;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.File;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -106,7 +107,7 @@ public class InteractiveJavaConsole extends Console {
 	}
 
 	private void setSystemVars() {
-		super.addSystemVariable("PWD", System.getProperty("user.dir") + "\\");
+		super.addSystemVariable("PWD", System.getProperty("user.dir") + File.separatorChar);
 		try {
 			Command.addAlias("help", "man");
 			Command.addAlias("remove", "rm");
@@ -118,6 +119,7 @@ public class InteractiveJavaConsole extends Console {
 			Command.addAlias("edit", "more");
 			Command.addAlias("edit", "less");
 			Command.addAlias("exit", "close");
+			Command.addAlias("exit", "quit");
 			Command.addAlias("make_directory", "mkdir");
 		} catch (Exception ignore) {}
 	}

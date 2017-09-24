@@ -16,7 +16,7 @@ public abstract class InteractiveJava {
 		String replaced = StringUtils.replaceVariables(line.toLowerCase(), console.getVariables());
 		line = StringUtils.formatLiterals(line.trim());
 		String[] args = line.split("\\s");
-		line = line.replace("ง", " ");
+		line = line.replace("ยง", " ");
 		args = StringUtils.undoLiterals(args);
 		try {
 			// TODO implements own evaluator for >, <, >=, <=, ==, !, NOT, &&, AND, ||, OR

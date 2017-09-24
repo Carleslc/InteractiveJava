@@ -17,7 +17,7 @@ public class Touch implements Command {
 				console.printError(f.getName() + " already exists!");
 			else {
 				try {
-					if (args[1].startsWith("/") || args[1].startsWith("\\"))
+					if (args[1].startsWith("/") || args[1].startsWith(File.separator))
 						f.mkdir();
 					else
 						f.createNewFile();

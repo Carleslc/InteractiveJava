@@ -37,7 +37,7 @@ public interface Command {
 				Command.alias.put(StringUtils.formatAsCommand(alias), this);
 				return;
 			}
-			// if already exists (not ClassNotFoundException is thrown)
+			// if already exists (no ClassNotFoundException is thrown)
 			throw new AlreadyExistsException(alias + " already exists as a command or alias!");
 		}
 	}

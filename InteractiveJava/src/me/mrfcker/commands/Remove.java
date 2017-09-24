@@ -13,6 +13,9 @@ public class Remove implements Command {
 	@Override
 	public Object execute(Console console, String[] args) {
 		if (args.length > 1) {
+			String[] rawArgs = args;
+			args = StringUtils.remove(args, "-f");
+			boolean force = rawArgs.length != args.length;
 			String arg = StringUtils.concat(args, 1);
 			if (console.existsVariable(arg)) {
 				Object oldValue = console.removeVariable(arg);
@@ -24,13 +27,9 @@ public class Remove implements Command {
 				String path = console.getVariable("PWD").toString() + arg;
 				File f = new File(path);
 				if (f.exists()) {
-					int opt = JOptionPane.showConfirmDialog(null, "File " + arg +
-							" will be deleted permanently, are you sure?", "Delete file",
-							JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-					if (opt == JOptionPane.YES_OPTION) {
-						f.delete();
-						console.printAsHelp(f.getName() + " has been deleted.");
-					}
+					if (force) delete(console, f);
+					else deleteWithWarning(console, f);
+
 					console.handleInput(false);
 					return path;
 				}
@@ -41,6 +40,30 @@ public class Remove implements Command {
 		else
 			console.printAsHelp(help());
 		return null;
+	}
+	
+	private void deleteWithWarning(Console console, File f) {
+		boolean isDir = f.isDirectory();
+		String title = "Delete " + (isDir ? "directory " : "file ");
+		String message = isDir ?
+				"Directory " + f.getName() + " along wiht its contents will be deleted permanently, are you sure?"
+				: "File " + f.getName() + " will be deleted permanently, are you sure?";
+		int opt = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+		if (opt == JOptionPane.YES_OPTION) delete(console, f);
+	}
+	
+	private void deleteDirRecursive(File dir) {
+		for (File file : dir.listFiles()) {
+			if (file.isDirectory())
+				deleteDirRecursive(file);
+			file.delete();
+		}
+	}
+	
+	private void delete(Console console, File f) {
+		if (f.isDirectory()) deleteDirRecursive(f);
+		f.delete();
+		console.printAsHelp(f.getName() + " has been deleted.");
 	}
 
 	@Override

@@ -47,8 +47,10 @@ public class Alias implements Command {
 						console.printAsHelp(alias);
 					}
 				}
-				if (res.isEmpty())
+				if (res.isEmpty()) {
 					console.printAsHelp(cmd + " doesn't have any alias.");
+					return cmd;
+				}
 				return res.substring(0, res.length() - 1);
 			}
 		}

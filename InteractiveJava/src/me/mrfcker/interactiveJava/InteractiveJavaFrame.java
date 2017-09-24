@@ -13,6 +13,10 @@ import org.eclipse.wb.swing.FocusTraversalOnArray;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 
 public class InteractiveJavaFrame extends JFrame {
 
@@ -46,15 +50,34 @@ public class InteractiveJavaFrame extends JFrame {
 
 		getContentPane().setLayout(groupLayout);
 		getContentPane().setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{scrollPane_1, scrollPane, console}));
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle("Interactive Java - " + console.getVariable("PWD"));
 
 		setDefaultStyle();
+		center(this);
 		
 		setVisible(true);
 	}
 
 	public Console getConsole() {
 		return console;
+	}
+	
+	private static void center(JFrame frame) {
+		frame.pack();
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
+		Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
+		final int frameWidth = frame.getWidth();
+		final int frameHeight = frame.getHeight();
+		int x = (int) ((rect.getMaxX()) - frameWidth)/2;
+		int y = (int) ((rect.getMaxY()) - frameHeight)/2;
+		frame.setLocation(x, y);
+		int width = (int) Math.min(frameWidth, rect.getMaxX());
+		int height = (int) Math.min(frameHeight, rect.getMaxY());
+		Dimension size = new Dimension(width, height);
+		frame.setMinimumSize(size);
+		frame.setPreferredSize(size);
 	}
 	
 	private static final void setDefaultStyle() {

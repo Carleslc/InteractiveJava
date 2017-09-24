@@ -7,7 +7,8 @@ public class Exit implements Command {
 
 	@Override
 	public Object execute(Console console, String[] args) {
-		console.getRootFrame().dispose();
+		console.dispose(console.getRootFrame());
+		System.exit(0);
 		return null;
 	}
 
