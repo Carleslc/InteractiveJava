@@ -17,8 +17,11 @@ public class Echo implements Command {
 				console.printAsConsole(args[1]);
 			return args[1];
 		}
-		else if (args.length > 2)
-			console.printAsConsole(StringUtils.concat(args, 1));
+		else if (args.length > 2) {
+			String message = StringUtils.concat(args, 1);
+			console.printAsConsole(message);
+			return message;
+		}
 		else
 			console.printAsHelp(help());
 		return null;

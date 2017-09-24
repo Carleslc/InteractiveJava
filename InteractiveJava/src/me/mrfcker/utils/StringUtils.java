@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 public class StringUtils {
 
+	public static final String LITERAL_REPLACEMENT = "$L$";
 	private static final Pattern LITERAL_PATTERN = Pattern.compile("\".*\"");
 	
 	public static String formatAsCommand(String s) {
@@ -87,7 +88,7 @@ public class StringUtils {
 			for (int i = 0; i < s.length(); ++i) {
 				char at = s.charAt(i);
 				if (isLiteral && Character.isSpaceChar(at))
-					sb.append("$L$");
+					sb.append(LITERAL_REPLACEMENT);
 				else if (at == '"')
 					isLiteral = !isLiteral;
 				else
@@ -100,7 +101,7 @@ public class StringUtils {
 
 	public static String[] undoLiterals(String[] args) {
 		for (int i = 0; i < args.length; ++i)
-			args[i] = args[i].replace("$L$", " ");
+			args[i] = args[i].replace(LITERAL_REPLACEMENT, " ");
 		return args;
 	}
 	

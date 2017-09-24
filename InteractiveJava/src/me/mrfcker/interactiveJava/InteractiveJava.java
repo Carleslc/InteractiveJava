@@ -9,17 +9,16 @@ public abstract class InteractiveJava {
 	
 	public static void main(String[] args) {
 		new InteractiveJavaFrame();
-		// TODO Save (State) and Load (State)
 	}
 	
 	public static Object process(Console console, String line, boolean ignoreVariable) {
 		String replaced = StringUtils.replaceVariables(line.toLowerCase(), console.getVariables());
 		line = StringUtils.formatLiterals(line.trim());
 		String[] args = line.split("\\s");
-		line = line.replace("§", " ");
+		line = line.replace(StringUtils.LITERAL_REPLACEMENT, " ");
 		args = StringUtils.undoLiterals(args);
 		try {
-			// TODO implements own evaluator for >, <, >=, <=, ==, !, NOT, &&, AND, ||, OR
+			// TODO implement own evaluator for >, <, >=, <=, ==, !, NOT, &&, AND, ||, OR
 			Object evaluated = new DoubleEvaluator().evaluate(replaced);
 			console.printAsConsole(evaluated.toString());
 			return evaluated;
