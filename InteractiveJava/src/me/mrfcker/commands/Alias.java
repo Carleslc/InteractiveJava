@@ -10,7 +10,7 @@ import me.mrfcker.utils.StringUtils;
 public class Alias implements Command {
 
 	@Override
-	public Object execute(Console console, String[] args) {
+	public String execute(Console console, String[] args) {
 		if (args.length > 2) {
 			try {
 				Command.addAlias(args[1], args[2]);
@@ -31,7 +31,7 @@ public class Alias implements Command {
 				Command oldCommand = alias.remove(StringUtils.formatAsCommand(cmd));
 				if (oldCommand != null)
 					console.printAsHelp(cmd + " has been removed from " + oldCommand.getName());
-				return oldCommand;
+				return oldCommand.getName();
 			}
 			else {
 				String res = "";

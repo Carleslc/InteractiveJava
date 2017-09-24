@@ -8,7 +8,7 @@ import me.mrfcker.interactiveJava.console.Console;
 public class Change_Directory implements Command {
 
 	@Override
-	public Object execute(Console console, String[] args) {
+	public String execute(Console console, String[] args) {
 		if (args.length > 1) {
 			String path = console.getVariable("PWD").toString();
 			if (args[1].equals("..")) {
@@ -47,8 +47,8 @@ public class Change_Directory implements Command {
 
 	@Override
 	public String help() {
-		return "cd {DIR} - Changes current directory (PWD) to {DIR}."
-				+ "cd ..";
+		return "cd {DIR} - Changes current directory (PWD) to {DIR}.\n"
+				+ "cd .. - Changes current directory (PWD) to parent directory.";
 	}
 
 }

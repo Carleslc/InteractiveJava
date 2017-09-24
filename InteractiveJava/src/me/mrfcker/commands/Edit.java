@@ -10,7 +10,7 @@ import java.io.IOException;
 public class Edit implements Command {
 
 	@Override
-	public Object execute(Console console, String[] args) {
+	public String execute(Console console, String[] args) {
 		if (args.length > 1) {
 			File f = new File(console.getVariable("PWD") + args[1]);
 			if (!f.exists()) {

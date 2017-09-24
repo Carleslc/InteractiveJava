@@ -30,7 +30,7 @@ public class Ahorcado implements Command {
 	private boolean complete;
 
 	@Override
-	public Object execute(Console console, String[] args) {
+	public String execute(Console console, String[] args) {
 		this.console = console;
 
 		inputPanel = new JPanel();

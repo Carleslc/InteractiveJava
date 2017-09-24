@@ -2,7 +2,7 @@ package me.mrfcker.interactiveJava.console;
 
 class SystemVariable extends Variable {
 
-	public SystemVariable(Object value) {
+	public SystemVariable(String value) {
 		super(value, true);
 	}
 

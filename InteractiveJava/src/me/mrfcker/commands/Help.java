@@ -19,7 +19,7 @@ public class Help implements Command {
 	}
 
 	@Override
-	public Object execute(Console console, String[] args) {
+	public String execute(Console console, String[] args) {
 		if (args.length > 1) {
 			try {
 				String help = Command.get(args[1]).help();

@@ -4,9 +4,16 @@
 
 	<groupId>InteractiveJava</groupId>
 	<artifactId>InteractiveJava</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>InteractiveJava</name>
 	<description>Custom Java Console with operations, variables and some commands.</description>
+
+	<repositories>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<!-- Reflection Utils -->
@@ -20,6 +27,12 @@
 			<groupId>com.fathzer</groupId>
 			<artifactId>javaluator</artifactId>
 			<version>3.0.1</version>
+		</dependency>
+		<!-- OS Utils -->
+		<dependency>
+			<groupId>com.github.Carleslc</groupId>
+			<artifactId>SerialNumber</artifactId>
+			<version>1.1</version>
 		</dependency>
 	</dependencies>
 

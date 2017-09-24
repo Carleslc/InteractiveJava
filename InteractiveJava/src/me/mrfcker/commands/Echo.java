@@ -7,7 +7,7 @@ import me.mrfcker.utils.StringUtils;
 public class Echo implements Command {
 
 	@Override
-	public Object execute(Console console, String[] args) {
+	public String execute(Console console, String[] args) {
 		if (args.length == 2) {
 			if (args[1].equalsIgnoreCase("off"))
 				console.enablePrinting(false);

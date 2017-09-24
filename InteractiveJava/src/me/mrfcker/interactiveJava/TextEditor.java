@@ -29,21 +29,24 @@ public class TextEditor extends JFrame {
 	
 	private JPanel contentPane;
 	private JTextArea textArea;
+	private int originalTextHash;
 	
 	private File file;
 
 	public TextEditor(Console attached, File file) {
 		this.attached = attached;
 		this.file = file;
-		final JFrame instance = this;
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                int opt = JOptionPane.showConfirmDialog(null, "Save file?");
-                if (opt == JOptionPane.YES_OPTION && file != null)
-                	save();
+            	int opt = JOptionPane.YES_OPTION;
+            	if (modified()) {
+	                opt = JOptionPane.showConfirmDialog(null, "Save file?", "There are unsaved changes", JOptionPane.WARNING_MESSAGE);
+	                if (opt == JOptionPane.YES_OPTION && file != null)
+	                	save();
+            	}
                 if (opt != JOptionPane.CANCEL_OPTION)
-                	attached.dispose(instance);
+                	attached.dispose(TextEditor.this);
             }
         });
 		setBounds(0, 0, 1000, 500);
@@ -59,7 +62,7 @@ public class TextEditor extends JFrame {
 		textArea.setTabSize(2);
 		textArea.setFont(new Font("Lucida Sans Unicode", Font.PLAIN, 13));
 		scrollPane.setViewportView(textArea);
-		setTitle("Interactive Java Text Editor - " + file.getAbsolutePath());
+		setTitle("InteractiveJava Text Editor - " + file.getAbsolutePath());
 	}
 	
 	public String read() {
@@ -72,9 +75,15 @@ public class TextEditor extends JFrame {
 				line = br.readLine();
 			}
 
-			return sb.toString();
+			String text = sb.toString();
+			originalTextHash = text.hashCode();
+			return text;
 		} catch (Exception e) {}
 		return null;
+	}
+	
+	public boolean modified() {
+		return originalTextHash != textArea.getText().hashCode();
 	}
 	
 	public void save() {

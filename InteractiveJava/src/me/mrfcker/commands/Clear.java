@@ -6,7 +6,7 @@ import me.mrfcker.interactiveJava.console.Console;
 public class Clear implements Command {
 
 	@Override
-	public Object execute(Console console, String[] args) {
+	public String execute(Console console, String[] args) {
 		console.clear();
 		return null;
 	}

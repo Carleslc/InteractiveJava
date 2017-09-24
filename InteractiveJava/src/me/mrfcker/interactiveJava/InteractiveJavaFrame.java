@@ -2,11 +2,15 @@ package me.mrfcker.interactiveJava;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.GroupLayout;
+import javax.swing.InputMap;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.text.DefaultEditorKit;
 
+import me.carleslc.serialnumber.OS;
 import me.mrfcker.interactiveJava.console.Console;
 import me.mrfcker.interactiveJava.console.InteractiveJavaConsole;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
@@ -17,6 +21,7 @@ import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 
 public class InteractiveJavaFrame extends JFrame {
 
@@ -51,7 +56,8 @@ public class InteractiveJavaFrame extends JFrame {
 		getContentPane().setLayout(groupLayout);
 		getContentPane().setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{scrollPane_1, scrollPane, console}));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setTitle("Interactive Java - " + console.getVariable("PWD"));
+		// TODO: Save and load state (e.g. variables and aliases)
+		setTitle("InteractiveJava - " + console.getVariable("PWD"));
 
 		setDefaultStyle();
 		center(this);
@@ -96,6 +102,12 @@ public class InteractiveJavaFrame extends JFrame {
 			UIManager.getLookAndFeelDefaults().put("nimbusOrange", UIManager.getColor("nimbusBase"));
 			UIManager.getLookAndFeelDefaults().put("nimbusGreen", Color.getHSBColor(100/360f, 0.65f, 0.85f));
 		} catch (Exception notFoundThenUseDefault) {}
+		if (OS.get() == OS.MAC_OS) {
+			InputMap im = (InputMap) UIManager.get("TextField.focusInputMap");
+			im.put(KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.META_DOWN_MASK), DefaultEditorKit.copyAction);
+			im.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.META_DOWN_MASK), DefaultEditorKit.pasteAction);
+			im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.META_DOWN_MASK), DefaultEditorKit.cutAction);
+		}
 	}
 
 }

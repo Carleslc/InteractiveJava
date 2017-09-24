@@ -2,14 +2,14 @@ package me.mrfcker.interactiveJava.console;
 
 class Variable {
 	
-	private Object value;
+	private String value;
 	private boolean isSystemVariable;
 	
-	public Variable(Object value) {
+	public Variable(String value) {
 		this(value, false);
 	}
 	
-	public Variable(Object value, boolean isSystemVariable) {
+	public Variable(String value, boolean isSystemVariable) {
 		this.value = value;
 		this.isSystemVariable = isSystemVariable;
 	}
@@ -22,11 +22,11 @@ class Variable {
 		this.isSystemVariable = isSystemVariable;
 	}
 	
-	public Object getValue() {
+	public String getValue() {
 		return value;
 	}
 	
-	public void setValue(Object value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 	

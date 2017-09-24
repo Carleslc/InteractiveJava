@@ -46,7 +46,7 @@ public interface Command {
 		return getClass().getSimpleName().toLowerCase();
 	}
 	
-	Object execute(Console console, String[] args);
+	String execute(Console console, String[] args);
 	
 	String help();
 }

@@ -12,7 +12,7 @@ import me.mrfcker.utils.StringUtils;
 public class Directory implements Command {
 
 	@Override
-	public Object execute(Console console, String[] args) {
+	public String execute(Console console, String[] args) {
 		String path;
 		if (args.length > 1)
 			path = console.getVariable("PWD") + StringUtils.concat(args, 1);

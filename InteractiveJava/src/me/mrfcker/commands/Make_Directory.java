@@ -11,7 +11,7 @@ public class Make_Directory implements Command {
 	}
 
 	@Override
-	public Object execute(Console console, String[] args) {
+	public String execute(Console console, String[] args) {
 		if (args.length > 1) {
 			args[1] = "/" + args[1];
 			new Touch().execute(console, args);

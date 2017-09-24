@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DecimalFormat;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +20,9 @@ import java.util.stream.Collectors;
 public class StringUtils {
 
 	public static final String LITERAL_REPLACEMENT = "$L$";
+	
 	private static final Pattern LITERAL_PATTERN = Pattern.compile("\".*\"");
+	private final static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.######");
 	
 	public static String formatAsCommand(String s) {
 		if (s != null) {
@@ -54,11 +57,22 @@ public class StringUtils {
 			// Remove literals
 			List<String> literals = getLiterals(s);
 			s = s.replaceAll(LITERAL_PATTERN.pattern(), "\\$!\\$");
+			// Replace variables
+			s = s.toLowerCase();
 			for (Entry<String, Object> var : variables.entrySet())
-				s = s.replace(var.getKey(), var.getValue().toString());
+				s = s.replace(var.getKey(), wrapDouble(var.getValue().toString()));
+			// Add literals
 			s = replaceLiterals(s, literals);
 		}
 		return s;
+	}
+	
+	public static String wrapDouble(String s) {
+		try {
+			return DECIMAL_FORMAT.format(Double.parseDouble(s));
+		} catch (NumberFormatException ignore) {
+			return s;
+		}
 	}
 
 	private static String replaceLiterals(String s, List<String> literals) {

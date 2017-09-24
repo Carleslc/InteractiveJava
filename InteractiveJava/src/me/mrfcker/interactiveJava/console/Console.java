@@ -24,6 +24,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
 import me.mrfcker.interactiveJava.Command;
+import me.mrfcker.utils.StringUtils;
 
 public abstract class Console extends JTextPane implements Serializable {
 	
@@ -65,7 +66,7 @@ public abstract class Console extends JTextPane implements Serializable {
 		this("", attached);
 	}
 	
-	public Object executeCommand(String command, String[] args) {
+	public String executeCommand(String command, String[] args) {
 		try {
 			lastCommand = command;
 			lastCommandWasError = false;
@@ -80,35 +81,37 @@ public abstract class Console extends JTextPane implements Serializable {
 		return null;
 	}
 	
-	public Object getVariable(String variable) {
+	public String getVariable(String variable) {
 		if (variable != null)
 			variable = variable.toLowerCase();
-		return vars.get(variable);
+		return vars.get(variable).getValue();
 	}
 	
-	public void addVariable(String variable, Object value) {
+	public void addVariable(String variable, String value) {
 		if (variable != null)
 			variable = variable.toLowerCase();
 		if (canReplaceVariable(variable, false))
 			vars.put(variable, new Variable(value));
 	}
 	
-	public void addSystemVariable(String variable, Object value) {
+	public void addSystemVariable(String variable, String value) {
 		addSystemVariable(variable, value, false);
 	}
 	
-	public void addSystemVariable(String variable, Object value, boolean asConsole) {
+	public void addSystemVariable(String variable, String value, boolean asConsole) {
 		if (variable != null)
 			variable = variable.toLowerCase();
 		if (canReplaceVariable(variable, asConsole))
 			vars.put(variable, new SystemVariable(value));
 	}
 
-	public Object removeVariable(String variable) {
+	public String removeVariable(String variable) {
 		if (variable != null)
 			variable = variable.toLowerCase();
-		if (canReplaceVariable(variable, false))
-			return vars.remove(variable);
+		if (canReplaceVariable(variable, false)) {
+			Variable old = vars.remove(variable);
+			if (old != null) return old.getValue();
+		}
 		return null;
 	}
 	
@@ -151,6 +154,7 @@ public abstract class Console extends JTextPane implements Serializable {
 	
 	public void printColored(String msg, Color color, boolean newLine) {
 		if (canPrint) {
+			msg = StringUtils.wrapDouble(msg);
 			StyleContext sc = StyleContext.getDefaultStyleContext();
 			AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, color);
 	

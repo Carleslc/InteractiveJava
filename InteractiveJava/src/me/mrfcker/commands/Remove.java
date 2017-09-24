@@ -11,14 +11,14 @@ import me.mrfcker.utils.StringUtils;
 public class Remove implements Command {
 
 	@Override
-	public Object execute(Console console, String[] args) {
+	public String execute(Console console, String[] args) {
 		if (args.length > 1) {
 			String[] rawArgs = args;
 			args = StringUtils.remove(args, "-f");
 			boolean force = rawArgs.length != args.length;
 			String arg = StringUtils.concat(args, 1);
 			if (console.existsVariable(arg)) {
-				Object oldValue = console.removeVariable(arg);
+				String oldValue = console.removeVariable(arg);
 				if (oldValue == null)
 					console.printError(arg + " is a system variable.");
 				return oldValue;

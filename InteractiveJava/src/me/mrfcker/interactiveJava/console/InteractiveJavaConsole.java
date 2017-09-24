@@ -37,14 +37,14 @@ public class InteractiveJavaConsole extends Console {
 		addSystemVariable("ANS", String.valueOf(value), true);
 	}
 
-	public void addVariable(String variable, Object value) {
+	public void addVariable(String variable, String value) {
 		removeVariable(variable);
 		super.addVariable(variable, value);
 		model.addRow(new String[] {variable, value.toString()});
 	}
 
-	public Object removeVariable(String variable) {
-		Object old = super.removeVariable(variable);
+	public String removeVariable(String variable) {
+		String old = super.removeVariable(variable);
 		int i = 0;
 		boolean found = false;
 		while (!found && i < varsTable.getRowCount()) {
@@ -93,11 +93,11 @@ public class InteractiveJavaConsole extends Console {
 	
 	private void replaceVariable(TableCellListener tcl) {
 		if (tcl.getColumn() == 0) { // Changed variable's name
-			Object value = super.removeVariable((String)tcl.getOldValue());
+			String value = super.removeVariable((String)tcl.getOldValue());
 			super.addVariable((String)tcl.getNewValue(), value);
 		}
 		else // Changed variable's value
-			super.addVariable((String)varsTable.getValueAt(tcl.getRow(), 0), tcl.getNewValue());
+			super.addVariable((String)varsTable.getValueAt(tcl.getRow(), 0), tcl.getNewValue().toString());
 	}
 
 	private void setModel() {
